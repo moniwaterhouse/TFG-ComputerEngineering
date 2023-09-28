@@ -12,6 +12,27 @@ def create_cells(driver, x, y, value):
     
     driver.run(query, x=x, y=y)
 
+def create_relations(driver):
+    relations_query = """
+    MATCH (c:Cell)
+    OPTIONAL MATCH (northNeighbor:Cell {xPos: c.xPos, yPos: c.yPos - 1})
+    OPTIONAL MATCH (westNeighbor:Cell {xPos: c.xPos - 1, yPos: c.yPos})
+    OPTIONAL MATCH (eastNeighbor:Cell {xPos: c.xPos + 1, yPos: c.yPos})
+    OPTIONAL MATCH (southNeighbor:Cell {xPos: c.xPos, yPos: c.yPos + 1})
+
+    FOREACH (north IN CASE WHEN northNeighbor IS NOT NULL THEN [northNeighbor] ELSE [] END |
+        CREATE (c)-[:northNeighbor]->(north))
+    FOREACH (west IN CASE WHEN westNeighbor IS NOT NULL THEN [westNeighbor] ELSE [] END |
+        CREATE (c)-[:westNeighbor]->(west))
+    FOREACH (east IN CASE WHEN eastNeighbor IS NOT NULL THEN [eastNeighbor] ELSE [] END |
+        CREATE (c)-[:eastNeighbor]->(east))
+    FOREACH (south IN CASE WHEN southNeighbor IS NOT NULL THEN [southNeighbor] ELSE [] END |
+        CREATE (c)-[:southNeighbor]->(south))
+    """
+
+    with driver.session() as session:
+        session.run(relations_query)
+
 #Connect to Neo4j database
 uri = "bolt://localhost:7687"  #Change this URI if necessary
 username = "neo4j"
@@ -35,6 +56,8 @@ with driver.session() as session:
         for x, value in enumerate(line):
             # Use the session to create nodes here
             session.execute_write(create_cells, x, y, value)
+
+create_relations(driver)
 
 # Close the Neo4j driver
 driver.close()
