@@ -3,7 +3,7 @@ from neo4j import GraphDatabase
 def create_cells(driver, x, y, value):
     if value == '0':
         query = (
-            "CREATE (c:Cell {visited: 'F', type: 0, pheromoneIntensity: 0, xPos: $x, yPos: $y})"
+            "CREATE (c:Cell {visited: 'F', type: 0, pheromoneIntensity: 500, xPos: $x, yPos: $y})"
         )
     elif value == '1':
         query = (
@@ -50,10 +50,22 @@ def visit_cell(driver, x_pos, y_pos):
     SET  c.visited = 'V'
     RETURN c;
     """
-
     with driver.session() as session:
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()  # Assuming you expect a single result
+
+# Define a function to decrement pheromoneIntensity
+def evaporate_pheromones(driver):
+    query = """
+    MATCH (c:Cell)
+    WHERE c.pheromoneIntensity > 0
+    SET c.pheromoneIntensity = c.pheromoneIntensity - 1
+    RETURN c;
+    """
+
+    with driver.session() as session:
+        result = session.run(query)
+        return result
 
 #Connect to Neo4j database
 uri = "bolt://localhost:7687"  #Change this URI if necessary
@@ -80,6 +92,8 @@ with driver.session() as session:
             session.execute_write(create_cells, x, y, value)
 
 create_relations(driver)
+
+result = evaporate_pheromones(driver)
 
 # Close the Neo4j driver
 driver.close()
