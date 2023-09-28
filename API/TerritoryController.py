@@ -73,6 +73,23 @@ def delete_territory(driver):
     with driver.session() as session:
         session.run(query)
 
+def initiate_territory(territory_txt_path, driver):
+    # Read and process the .txt file
+    with open(territory_txt_path, "r") as file:
+        lines = file.readlines()
+
+    # Create the Neo4j driver session outside of the loop
+    with driver.session() as session:
+        # Loop through the lines
+        for y, line in enumerate(lines):
+            line = line.strip()
+            # Loop through the characters in each line
+            for x, value in enumerate(line):
+                # Use the session to create nodes here
+                session.execute_write(create_cells, x, y, value)
+
+    create_relations(driver)
+
 #Connect to Neo4j database
 uri = "bolt://localhost:7687"  #Change this URI if necessary
 username = "neo4j"
@@ -83,25 +100,11 @@ driver = GraphDatabase.driver(uri, auth=(username, password))
 # Specify the path to your .txt file
 territory_path = "../TerritoryFiles/territory.txt"
 
-'''# Read and process the .txt file
-with open(territory_path, "r") as file:
-    lines = file.readlines()
+initiate_territory(territory_path, driver)
 
-# Create the Neo4j driver session outside of the loop
-with driver.session() as session:
-    # Loop through the lines
-    for y, line in enumerate(lines):
-        line = line.strip()
-        # Loop through the characters in each line
-        for x, value in enumerate(line):
-            # Use the session to create nodes here
-            session.execute_write(create_cells, x, y, value)
+#evaporate_pheromones(driver)
 
-create_relations(driver)
-
-result = evaporate_pheromones(driver)'''
-
-delete_territory(driver)
+#delete_territory(driver)
 
 # Close the Neo4j driver
 driver.close()
