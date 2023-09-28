@@ -67,6 +67,12 @@ def evaporate_pheromones(driver):
         result = session.run(query)
         return result
 
+def delete_territory(driver):
+    query = "MATCH (c) DETACH DELETE c"
+
+    with driver.session() as session:
+        session.run(query)
+
 #Connect to Neo4j database
 uri = "bolt://localhost:7687"  #Change this URI if necessary
 username = "neo4j"
@@ -77,7 +83,7 @@ driver = GraphDatabase.driver(uri, auth=(username, password))
 # Specify the path to your .txt file
 territory_path = "../TerritoryFiles/territory.txt"
 
-# Read and process the .txt file
+'''# Read and process the .txt file
 with open(territory_path, "r") as file:
     lines = file.readlines()
 
@@ -93,7 +99,9 @@ with driver.session() as session:
 
 create_relations(driver)
 
-result = evaporate_pheromones(driver)
+result = evaporate_pheromones(driver)'''
+
+delete_territory(driver)
 
 # Close the Neo4j driver
 driver.close()
