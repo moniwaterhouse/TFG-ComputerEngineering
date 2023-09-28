@@ -33,6 +33,28 @@ def create_relations(driver):
     with driver.session() as session:
         session.run(relations_query)
 
+def deposit_pheromone(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    SET  c.pheromoneIntensity = 500
+    RETURN c;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()  # Assuming you expect a single result
+
+def visit_cell(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    SET  c.visited = 'V'
+    RETURN c;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()  # Assuming you expect a single result
+
 #Connect to Neo4j database
 uri = "bolt://localhost:7687"  #Change this URI if necessary
 username = "neo4j"
