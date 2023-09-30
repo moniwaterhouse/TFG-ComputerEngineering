@@ -1,4 +1,11 @@
 from neo4j import GraphDatabase
+from flask import Flask, request, jsonify
+
+#Connect to Neo4j database
+URI = "bolt://localhost:7687"  #Change this URI if necessary
+USERNAME = "neo4j"
+PASSWORD = "territory"
+TERRITORY_FILE = "../TerritoryFiles/territory.txt"
 
 def create_cells(driver, x, y, value):
     if value == '0':
@@ -30,8 +37,8 @@ def create_relations(driver):
         CREATE (c)-[:southNeighbor]->(south))
     """
 
-    with driver.session() as session:
-        session.run(relations_query)
+    # Execute the query
+    driver.run(relations_query)
 
 def deposit_pheromone(driver, x_pos, y_pos):
     query = """
@@ -90,21 +97,38 @@ def initiate_territory(territory_txt_path, driver):
 
     create_relations(driver)
 
-#Connect to Neo4j database
-uri = "bolt://localhost:7687"  #Change this URI if necessary
-username = "neo4j"
-password = "territory"
 
-driver = GraphDatabase.driver(uri, auth=(username, password))
 
-# Specify the path to your .txt file
-territory_path = "../TerritoryFiles/territory.txt"
+driver = GraphDatabase.driver(URI, auth=(USERNAME, PASSWORD))
+app = Flask(__name__)
 
-initiate_territory(territory_path, driver)
+@app.route('/api/initiate-territory', methods=['POST'])
+def initiate_territory():
+    try:
+        # Read and process the .txt file
+        with open(TERRITORY_FILE, "r") as file:
+            lines = file.readlines()
 
-#evaporate_pheromones(driver)
+        # Create the Neo4j driver session outside of the loop
+        with driver.session() as session:
+            # Loop through the lines
+            for y, line in enumerate(lines):
+                line = line.strip()
+                # Loop through the characters in each line
+                for x, value in enumerate(line):
+                    # Use the session to create nodes here
+                    session.execute_write(create_cells, x, y, value)
 
-#delete_territory(driver)
+        # Create relationships
+        with driver.session() as session:
+            session.execute_write(create_relations)
 
-# Close the Neo4j driver
+        return jsonify({"message": "Territory data uploaded successfully!"}), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 driver.close()
