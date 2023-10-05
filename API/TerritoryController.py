@@ -40,23 +40,13 @@ def create_relations(driver):
     # Execute the query
     driver.run(relations_query)
 
-def deposit_pheromone(driver, x_pos, y_pos):
-    query = """
-    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    SET  c.pheromoneIntensity = 500
-    RETURN c;
-    """
-
-    with driver.session() as session:
-        result = session.run(query, xPos=x_pos, yPos=y_pos)
-        return result.single()  # Assuming you expect a single result
-
 def visit_cell(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    SET  c.visited = 'V'
+    SET  c.pheromoneIntensity = 500, c.visited = 'V'
     RETURN c;
     """
+
     with driver.session() as session:
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()  # Assuming you expect a single result
@@ -79,24 +69,6 @@ def delete_territory(driver):
 
     with driver.session() as session:
         session.run(query)
-
-def initiate_territory(territory_txt_path, driver):
-    # Read and process the .txt file
-    with open(territory_txt_path, "r") as file:
-        lines = file.readlines()
-
-    # Create the Neo4j driver session outside of the loop
-    with driver.session() as session:
-        # Loop through the lines
-        for y, line in enumerate(lines):
-            line = line.strip()
-            # Loop through the characters in each line
-            for x, value in enumerate(line):
-                # Use the session to create nodes here
-                session.execute_write(create_cells, x, y, value)
-
-    create_relations(driver)
-
 
 
 driver = GraphDatabase.driver(URI, auth=(USERNAME, PASSWORD))
@@ -127,6 +99,53 @@ def initiate_territory():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# Define an API endpoint to update node properties with URL parameters
+@app.route('/api/deposit-pheromone/<int:x_pos>/<int:y_pos>', methods=['POST'])
+def deposit_pheromone(x_pos, y_pos):
+    try:
+        # Call the function to run the Neo4j query
+        result = visit_cell(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify({"Success": "Pheromone deposited"}), 200
+        else:
+            return jsonify({"Error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"Error": str(e)}), 500
+
+@app.route('/api/reset-territory/', methods=['POST'])
+def reset_territory():
+    try:
+        # Call the function to run the Neo4j query
+        result_deletion = delete_territory(driver)
+        
+
+        if result_deletion:
+            result_initiation = initiate_territory()
+            if result_initiation:
+                return jsonify({"Success": " The territory has been reseted."}), 200
+            else:
+                return jsonify({"Error": "There has been an error reseting the territor."}), 404
+        else:
+            return jsonify({"Error": "There has been an error deleting the territory."}), 404
+        
+    except Exception as e:
+        return jsonify({"Error": str(e)}), 500
+
+@app.route('/api/remove-territory', methods=['POST'])
+def remove_territory():
+    try:
+        # Call the function to run the Neo4j query
+        result = delete_territory(driver)
+
+        if result:
+            return jsonify({"Success": " The territory has been removed."}), 200
+        else:
+            return jsonify({"Error": "There has been an error deleting the territory."}), 404
+        
+    except Exception as e:
+        return jsonify({"Error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
