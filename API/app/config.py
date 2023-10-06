@@ -5,4 +5,4 @@ class Config:
     USERNAME = "neo4j"
     PASSWORD = "territory"
 
-    TERRITORY_FILE = "./TerritoryFiles/territory.txt"
+    TERRITORY_FILE_PATH = "/Users/moniwaterhouse/Documents/TFG-ComputerEngineering/API/TerritoryFiles/territory.txt"
