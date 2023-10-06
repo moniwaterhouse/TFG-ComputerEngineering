@@ -70,6 +70,59 @@ def delete_territory(driver):
     with driver.session() as session:
         session.run(query)
 
+def check_north_neighbor(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (northNeighbor:Cell {xPos: c.xPos, yPos: c.yPos - 1})
+    RETURN
+       northNeighbor.pheromoneIntensity AS northPheromoneIntensity,
+       northNeighbor.type AS cellType;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+def check_south_neighbor(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (southNeighbor:Cell {xPos: c.xPos, yPos: c.yPos + 1})
+    RETURN
+       southNeighbor.pheromoneIntensity AS southPheromoneIntensity,
+       southNeighbor.type AS cellType;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+def check_east_neighbor(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (eastNeighbor:Cell {xPos: c.xPos + 1, yPos: c.yPos})
+    RETURN
+       eastNeighbor.pheromoneIntensity AS eastPheromoneIntensity,
+       eastNeighbor.type AS cellType;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+def check_west_neighbor(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (westNeighbor:Cell {xPos: c.xPos - 1, yPos: c.yPos})
+    RETURN
+       westNeighbor.pheromoneIntensity AS westPheromoneIntensity,
+       westNeighbor.type AS cellType;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+
 
 driver = GraphDatabase.driver(URI, auth=(USERNAME, PASSWORD))
 app = Flask(__name__)
@@ -146,6 +199,66 @@ def remove_territory():
         
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
+
+# Define a route to query the north neighbor's pheromoneIntensity
+@app.route('/api/north-neighbor-status/<int:x_pos>/<int:y_pos>', methods=['GET'])
+def get_north_neighbor_status(x_pos, y_pos):
+    try:
+
+        with driver.session() as session:
+            result = check_north_neighbor(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Define a route to query the south neighbor's pheromoneIntensity
+@app.route('/api/south-neighbor-status/<int:x_pos>/<int:y_pos>', methods=['GET'])
+def get_south_neighbor_status(x_pos, y_pos):
+    try:
+
+        with driver.session() as session:
+            result = check_south_neighbor(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Define a route to query the east neighbor's pheromoneIntensity
+@app.route('/api/east-neighbor-status/<int:x_pos>/<int:y_pos>', methods=['GET'])
+def get_east_neighbor_status(x_pos, y_pos):
+    try:
+
+        with driver.session() as session:
+            result = check_east_neighbor(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Define a route to query the west neighbor's pheromoneIntensity
+@app.route('/api/west-neighbor-status/<int:x_pos>/<int:y_pos>', methods=['GET'])
+def get_west_neighbor_status(x_pos, y_pos):
+    try:
+
+        with driver.session() as session:
+            result = check_west_neighbor(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
