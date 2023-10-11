@@ -5,8 +5,8 @@ from app.models.territory import create_cells, create_relations, delete_territor
 territory_bp = Blueprint('territory', __name__)
 
 # Other territory-related routes
-@territory_bp.route('/initiate', methods=['POST'])
-def initiate_territory():
+@territory_bp.route('/initiate/<path:territory_file_path>', methods=['POST'])
+def initiate_territory(territory_file_path):
     try:
         # Read and process the .txt file
         with open(territory_file_path, "r") as file:
