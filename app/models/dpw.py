@@ -1,3 +1,75 @@
+def deposit_pheromone(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    SET  c.pheromoneIntensity = 500, c.visited = 'V'
+    RETURN c;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()  # Assuming you expect a single result
+
+# Define a function to decrement pheromoneIntensity
+def evaporate_pheromones(driver):
+    query = """
+    MATCH (c:Cell)
+    WHERE c.pheromoneIntensity > 0
+    SET c.pheromoneIntensity = c.pheromoneIntensity - 1
+    RETURN c;
+    """
+
+    with driver.session() as session:
+        result = session.run(query)
+        return result
+
+def check_north_pheromone(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (northNeighbor:Cell {xPos: c.xPos, yPos: c.yPos - 1})
+    RETURN
+       northNeighbor.pheromoneIntensity AS northPheromoneIntensity;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+def check_south_pheromone(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (southNeighbor:Cell {xPos: c.xPos, yPos: c.yPos + 1})
+    RETURN
+       southNeighbor.pheromoneIntensity AS southPheromoneIntensity;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+def check_east_pheromone(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (eastNeighbor:Cell {xPos: c.xPos + 1, yPos: c.yPos})
+    RETURN
+       eastNeighbor.pheromoneIntensity AS eastPheromoneIntensity;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+def check_west_pheromone(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    OPTIONAL MATCH (westNeighbor:Cell {xPos: c.xPos - 1, yPos: c.yPos})
+    RETURN
+       westNeighbor.pheromoneIntensity AS westPheromoneIntensity;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+    
 def check_north_type(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -45,6 +117,9 @@ def check_west_type(driver, x_pos, y_pos):
     with driver.session() as session:
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
+    
+
+
 
 def set_north_type(driver, x_pos, y_pos, type):
     if type == 1:
@@ -125,76 +200,3 @@ def set_west_type(driver, x_pos, y_pos, type):
     with driver.session() as session:
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
-    
-
-def deposit_pheromone(driver, x_pos, y_pos):
-    query = """
-    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    SET  c.pheromoneIntensity = 500, c.visited = 'V'
-    RETURN c;
-    """
-
-    with driver.session() as session:
-        result = session.run(query, xPos=x_pos, yPos=y_pos)
-        return result.single()  # Assuming you expect a single result
-
-def check_north_pheromone(driver, x_pos, y_pos):
-    query = """
-    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    OPTIONAL MATCH (northNeighbor:Cell {xPos: c.xPos, yPos: c.yPos - 1})
-    RETURN
-       northNeighbor.pheromoneIntensity AS northPheromoneIntensity;
-    """
-
-    with driver.session() as session:
-        result = session.run(query, xPos=x_pos, yPos=y_pos)
-        return result.single()
-
-def check_south_pheromone(driver, x_pos, y_pos):
-    query = """
-    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    OPTIONAL MATCH (southNeighbor:Cell {xPos: c.xPos, yPos: c.yPos + 1})
-    RETURN
-       southNeighbor.pheromoneIntensity AS southPheromoneIntensity;
-    """
-
-    with driver.session() as session:
-        result = session.run(query, xPos=x_pos, yPos=y_pos)
-        return result.single()
-
-def check_east_pheromone(driver, x_pos, y_pos):
-    query = """
-    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    OPTIONAL MATCH (eastNeighbor:Cell {xPos: c.xPos + 1, yPos: c.yPos})
-    RETURN
-       eastNeighbor.pheromoneIntensity AS eastPheromoneIntensity;
-    """
-
-    with driver.session() as session:
-        result = session.run(query, xPos=x_pos, yPos=y_pos)
-        return result.single()
-
-def check_west_pheromone(driver, x_pos, y_pos):
-    query = """
-    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    OPTIONAL MATCH (westNeighbor:Cell {xPos: c.xPos - 1, yPos: c.yPos})
-    RETURN
-       westNeighbor.pheromoneIntensity AS westPheromoneIntensity;
-    """
-
-    with driver.session() as session:
-        result = session.run(query, xPos=x_pos, yPos=y_pos)
-        return result.single()
-
-# Define a function to decrement pheromoneIntensity
-def evaporate_pheromones(driver):
-    query = """
-    MATCH (c:Cell)
-    WHERE c.pheromoneIntensity > 0
-    SET c.pheromoneIntensity = c.pheromoneIntensity - 1
-    RETURN c;
-    """
-
-    with driver.session() as session:
-        result = session.run(query)
-        return result

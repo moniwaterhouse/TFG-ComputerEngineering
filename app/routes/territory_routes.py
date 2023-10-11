@@ -26,7 +26,7 @@ def initiate_territory():
         with driver.session() as session:
             session.execute_write(create_relations)
 
-        return jsonify({"message": "Territory data uploaded successfully!"}), 200
+        return "Territory successfully created!", 200
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -39,9 +39,9 @@ def reset_territory():
         delete_territory(driver)
         result_initiation = initiate_territory()
         if result_initiation:
-            return jsonify({"Success": " The territory has been reseted."}), 200
+            return "Territory successfully reset!", 200
         else:
-            return jsonify({"Error": "There has been an error reseting the territory."}), 404
+            return jsonify({"Error": "There has been an error resetting the territory."}), 404
         
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
@@ -51,7 +51,7 @@ def remove_territory():
     try:
         # Call the function to run the Neo4j query
         delete_territory(driver)
-        return jsonify({"Success": " The territory has been removed."}), 200
+        return "Territory successfully deleted!", 200
         
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
