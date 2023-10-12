@@ -1,16 +1,20 @@
-from flask import Blueprint, jsonify
-from app import driver, territory_file_path
+from flask import Blueprint, jsonify, request
+from app import driver
 from app.models.territory import create_cells, create_relations, delete_territory
 
 territory_bp = Blueprint('territory', __name__)
 
 # Other territory-related routes
-@territory_bp.route('/initiate/<path:territory_file_path>', methods=['POST'])
-def initiate_territory(territory_file_path):
+@territory_bp.route('/initiate', methods=['POST'])
+def initiate_territory():
     try:
-        # Read and process the .txt file
-        with open(territory_file_path, "r") as file:
-            lines = file.readlines()
+         # Get the territory_file_path from the request URL parameters
+        territory_file_path = request.args.get('territory_file_path')
+
+        if territory_file_path:
+            # Read and process the .txt file
+            with open(territory_file_path, "r") as file:
+                lines = file.readlines()
 
         # Create the Neo4j driver session outside of the loop
         with driver.session() as session:
