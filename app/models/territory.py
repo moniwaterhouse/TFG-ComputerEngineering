@@ -38,3 +38,24 @@ def delete_territory(driver):
     with driver.session() as session:
         session.run(query)
 
+def check_missing_exploration(driver):
+    query = """
+            MATCH (c:Cell)
+            WHERE c.visited = 'F'
+            RETURN COUNT(c) as count
+            """
+            
+    with driver.session() as session:
+        result = session.run(query)
+        record = result.single()
+           
+      
+    count = record["count"]
+            
+
+    if count > 0:
+        return "True"
+    else:
+        return "False"
+
+

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app import driver
-from app.models.territory import create_cells, create_relations, delete_territory
+from app.models.territory import create_cells, create_relations, delete_territory, check_missing_exploration
 
 territory_bp = Blueprint('territory', __name__)
 
@@ -57,5 +57,16 @@ def remove_territory():
         delete_territory(driver)
         return "Territory successfully deleted!", 200
         
+    except Exception as e:
+        return jsonify({"Error": str(e)}), 500
+    
+@territory_bp.route('/check-exploration', methods=['GET'])
+def check_exploration():
+    try:
+        result = check_missing_exploration(driver)
+        if result:
+            return result, 200
+        else:
+            return jsonify({"error": "No missing cells to explore."}), 404
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
