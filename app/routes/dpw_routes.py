@@ -5,11 +5,11 @@ from app.models.dpw import is_current_visited, check_current_type, check_north_t
 dpw_bp = Blueprint('dpw', __name__)
 
 # Define an API endpoint to deposit pheromone in a cell
-@dpw_bp.route('/deposit-pheromone/<int:x_pos>/<int:y_pos>', methods=['POST'])
-def visit_cell(x_pos, y_pos):
+@dpw_bp.route('/deposit-pheromone/<int:x_pos>/<int:y_pos>/<int:pheromone_intensity>', methods=['POST'])
+def visit_cell(x_pos, y_pos, pheromone_intensity):
     try:
         # Call the function to run the Neo4j query
-        result = deposit_pheromone(driver, x_pos, y_pos)
+        result = deposit_pheromone(driver, x_pos, y_pos, pheromone_intensity)
 
         if result:
             return "Pheromone successfully deposited!", 200

@@ -1,12 +1,12 @@
-def deposit_pheromone(driver, x_pos, y_pos):
+def deposit_pheromone(driver, x_pos, y_pos, pheromone_intensity):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
-    SET  c.pheromoneIntensity = 500, c.visited = 'V'
+    SET c.pheromoneIntensity = $pheromoneIntensity, c.visited = 'V'
     RETURN c;
     """
 
     with driver.session() as session:
-        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        result = session.run(query, xPos=x_pos, yPos=y_pos, pheromoneIntensity=pheromone_intensity)
         return result.single()  # Assuming you expect a single result
 
 # Define a function to decrement pheromoneIntensity
