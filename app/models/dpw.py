@@ -22,6 +22,17 @@ def evaporate_pheromones(driver):
         result = session.run(query)
         return result
 
+def check_current_pheromone(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    RETURN
+       c.pheromoneIntensity AS pheromoneIntensity;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+    
 def check_north_pheromone(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -117,8 +128,28 @@ def check_west_type(driver, x_pos, y_pos):
     with driver.session() as session:
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
-    
 
+def check_current_type(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    RETURN
+       c.type AS cellType;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
+
+def is_current_visited(driver, x_pos, y_pos):
+    query = """
+    MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
+    RETURN
+       c.visited AS visited;
+    """
+
+    with driver.session() as session:
+        result = session.run(query, xPos=x_pos, yPos=y_pos)
+        return result.single()
 
 
 def set_north_type(driver, x_pos, y_pos, type):

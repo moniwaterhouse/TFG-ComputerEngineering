@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from app import driver, territory_file_path
-from app.models.dpw import check_north_type, check_south_type, check_east_type, check_west_type, check_north_pheromone, check_east_pheromone, check_south_pheromone, check_west_pheromone, deposit_pheromone, evaporate_pheromones, set_east_type,set_north_type, set_south_type, set_west_type
+from app.models.dpw import is_current_visited, check_current_type, check_north_type, check_south_type, check_east_type, check_west_type, check_current_pheromone, check_north_pheromone, check_east_pheromone, check_south_pheromone, check_west_pheromone, deposit_pheromone, evaporate_pheromones, set_east_type,set_north_type, set_south_type, set_west_type
 
 dpw_bp = Blueprint('dpw', __name__)
 
@@ -92,7 +92,50 @@ def get_west_type(x_pos, y_pos):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Define a route to query the west neighbor's type
+@dpw_bp.route('/check-current-type/<int:x_pos>/<int:y_pos>', methods=['GET'])
+def get_current_type(x_pos, y_pos):
+    try:
 
+        with driver.session() as session:
+            result = check_current_type(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Define a route to query the west neighbor's type
+@dpw_bp.route('/check-if-visited/<int:x_pos>/<int:y_pos>', methods=['GET'])
+def check_if_visited(x_pos, y_pos):
+    try:
+
+        with driver.session() as session:
+            result = is_current_visited(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Define a route to get the pheromone intensity from the current cel
+@dpw_bp.route('/current-pheromone/<int:x_pos>/<int:y_pos>', methods=['GET'])
+def get_current_pheromone(x_pos, y_pos):
+    try:
+
+        with driver.session() as session:
+            result = check_current_pheromone(driver, x_pos, y_pos)
+
+        if result:
+            return jsonify(result), 200
+        else:
+            return jsonify({"error": "Node not found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Define a route to query the north neighbor's pheromone
 @dpw_bp.route('/north-pheromone/<int:x_pos>/<int:y_pos>', methods=['GET'])
