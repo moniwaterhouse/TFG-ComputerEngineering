@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from app import driver, territory_file_path
+from app import driver
 from app.models.dpw import is_current_visited, check_current_type, check_north_type, check_south_type, check_east_type, check_west_type, check_current_pheromone, check_north_pheromone, check_east_pheromone, check_south_pheromone, check_west_pheromone, deposit_pheromone, evaporate_pheromones, set_east_type,set_north_type, set_south_type, set_west_type
 
 dpw_bp = Blueprint('dpw', __name__)
