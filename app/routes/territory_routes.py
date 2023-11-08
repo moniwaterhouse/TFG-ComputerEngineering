@@ -4,7 +4,7 @@ from app.models.territory import create_cells, create_relations, delete_territor
 
 territory_bp = Blueprint('territory', __name__)
 
-# Other territory-related routes
+# Define a route to create the territory in the data base
 @territory_bp.route('/initiate', methods=['POST'])
 def initiate_territory():
     try:
@@ -35,7 +35,7 @@ def initiate_territory():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+# Define a route to reset the territory to its original values
 @territory_bp.route('/reset', methods=['POST'])
 def reset_territory():
     try:
@@ -50,6 +50,7 @@ def reset_territory():
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
 
+# Define a route to delete the territory from the data base
 @territory_bp.route('/remove', methods=['POST'])
 def remove_territory():
     try:
@@ -59,7 +60,8 @@ def remove_territory():
         
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
-    
+
+# Define a route to check if all cells are visited
 @territory_bp.route('/check-exploration', methods=['GET'])
 def check_exploration():
     try:

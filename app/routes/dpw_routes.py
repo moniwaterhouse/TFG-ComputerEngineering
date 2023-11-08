@@ -4,7 +4,7 @@ from app.models.dpw import is_current_visited, check_current_type, check_north_t
 
 dpw_bp = Blueprint('dpw', __name__)
 
-# Define an API endpoint to deposit pheromone in a cell
+# Define a route to deposit pheromone in a cell
 @dpw_bp.route('/deposit-pheromone/<int:x_pos>/<int:y_pos>/<int:pheromone_intensity>', methods=['POST'])
 def visit_cell(x_pos, y_pos, pheromone_intensity):
     try:
@@ -18,7 +18,7 @@ def visit_cell(x_pos, y_pos, pheromone_intensity):
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
 
-# Define an API endpoint to evaporate pheromone intensity
+# Define an API route to evaporate all pheromones from the territory
 @dpw_bp.route('/evaporate-pheromones', methods=['POST'])
 def evaporate_pheromones_intensities():
     try:
@@ -92,7 +92,7 @@ def get_west_type(x_pos, y_pos):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Define a route to query the west neighbor's type
+# Define a route to query the type of a cell
 @dpw_bp.route('/check-current-type/<int:x_pos>/<int:y_pos>', methods=['GET'])
 def get_current_type(x_pos, y_pos):
     try:
@@ -107,7 +107,7 @@ def get_current_type(x_pos, y_pos):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Define a route to query the west neighbor's type
+# Define a route to check if a cell is visited
 @dpw_bp.route('/check-if-visited/<int:x_pos>/<int:y_pos>', methods=['GET'])
 def check_if_visited(x_pos, y_pos):
     try:
@@ -122,7 +122,7 @@ def check_if_visited(x_pos, y_pos):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-# Define a route to get the pheromone intensity from the current cel
+# Define a route to get the pheromone intensity from the current cell
 @dpw_bp.route('/current-pheromone/<int:x_pos>/<int:y_pos>', methods=['GET'])
 def get_current_pheromone(x_pos, y_pos):
     try:
@@ -196,7 +196,8 @@ def get_west_pheromone(x_pos, y_pos):
             return jsonify({"error": "Node not found."}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+# Define a route to set the type of the north neighbor
 @dpw_bp.route('/set-north-neighbor/<int:x_pos>/<int:y_pos>/<int:cell_type>', methods=['POST'])
 def set_north_neighbor(x_pos, y_pos, cell_type):
     try:
@@ -214,6 +215,7 @@ def set_north_neighbor(x_pos, y_pos, cell_type):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Define a route to set the type of the south neighbor
 @dpw_bp.route('/set-south-neighbor/<int:x_pos>/<int:y_pos>/<int:cell_type>', methods=['POST'])
 def set_south_neighbor(x_pos, y_pos, cell_type):
     try:
@@ -232,6 +234,7 @@ def set_south_neighbor(x_pos, y_pos, cell_type):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Define a route to set the type of the east neighbor
 @dpw_bp.route('/set-east-neighbor/<int:x_pos>/<int:y_pos>/<int:cell_type>', methods=['POST'])
 def set_east_neighbor(x_pos, y_pos, cell_type):
     try:
@@ -249,6 +252,7 @@ def set_east_neighbor(x_pos, y_pos, cell_type):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Define a route to set the type of the west neighbor
 @dpw_bp.route('/set-west-neighbor/<int:x_pos>/<int:y_pos>/<int:cell_type>', methods=['POST'])
 def set_west_neighbor(x_pos, y_pos, cell_type):
     try:

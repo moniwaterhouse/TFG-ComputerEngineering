@@ -1,3 +1,4 @@
+# Define a function to deposit pheromone
 def deposit_pheromone(driver, x_pos, y_pos, pheromone_intensity):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -22,6 +23,7 @@ def evaporate_pheromones(driver):
         result = session.run(query)
         return result
 
+# Define a function to check the pheromone intensity from the current cell
 def check_current_pheromone(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -32,7 +34,8 @@ def check_current_pheromone(driver, x_pos, y_pos):
     with driver.session() as session:
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
-    
+
+# Define a function to check the north neighbor's pheromone intensity
 def check_north_pheromone(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -45,6 +48,7 @@ def check_north_pheromone(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check the south neighbor's pheromone intensity
 def check_south_pheromone(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -57,6 +61,7 @@ def check_south_pheromone(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check the east neighbor's pheromone intensity
 def check_east_pheromone(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -69,6 +74,7 @@ def check_east_pheromone(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check the west neighbor's pheromone intensity
 def check_west_pheromone(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -80,7 +86,8 @@ def check_west_pheromone(driver, x_pos, y_pos):
     with driver.session() as session:
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
-    
+
+# Define a function to check the north neighbor's type
 def check_north_type(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -93,6 +100,7 @@ def check_north_type(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check the south neighbor's type
 def check_south_type(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -105,6 +113,7 @@ def check_south_type(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check the east neighbor's type
 def check_east_type(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -117,6 +126,7 @@ def check_east_type(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check the west neighbor's type
 def check_west_type(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -129,6 +139,7 @@ def check_west_type(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check the type of the current cell
 def check_current_type(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -140,6 +151,7 @@ def check_current_type(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to check if the current cell has been visited
 def is_current_visited(driver, x_pos, y_pos):
     query = """
     MATCH (c:Cell {xPos: $xPos, yPos: $yPos})
@@ -151,7 +163,7 @@ def is_current_visited(driver, x_pos, y_pos):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
-
+# Define a function to set the north neighbor's type
 def set_north_type(driver, x_pos, y_pos, type):
     if type == 1:
         query = """
@@ -172,6 +184,7 @@ def set_north_type(driver, x_pos, y_pos, type):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to set the south neighbor's type
 def set_south_type(driver, x_pos, y_pos, type):
     if type == 1:
         query = """
@@ -192,6 +205,7 @@ def set_south_type(driver, x_pos, y_pos, type):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to set the east neighbor's type
 def set_east_type(driver, x_pos, y_pos, type):
     if type == 1:
         query = """
@@ -212,6 +226,7 @@ def set_east_type(driver, x_pos, y_pos, type):
         result = session.run(query, xPos=x_pos, yPos=y_pos)
         return result.single()
 
+# Define a function to set the west neighbor's type
 def set_west_type(driver, x_pos, y_pos, type):
     if type == 1:
         query = """
