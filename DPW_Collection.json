@@ -1,0 +1,635 @@
+{
+	"info": {
+		"_postman_id": "cc57d912-7292-4092-97b6-de917ba07ace",
+		"name": "TFG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete Territory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/territory/remove",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"territory",
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initiate Territory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/territory/initiate/\"/Users/moniwaterhouse/TFG-ComputerEngineering-API/TerritoryFiles/territory.txt\"",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"territory",
+						"initiate",
+						"\"",
+						"Users",
+						"moniwaterhouse",
+						"TFG-ComputerEngineering-API",
+						"TerritoryFiles",
+						"territory.txt\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Territory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/territory/reset",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"territory",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check missing cells to visit",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/territory/check-exploration",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"territory",
+						"check-exploration"
+					]
+				},
+				"description": "/deposit-pheromone/<int:x_pos>/<int:y_pos>\n\nChange the values of x_pos, y_pos according to the coordenates of the cell you want to deposit the pheromone"
+			},
+			"response": []
+		},
+		{
+			"name": "Check_if_visited",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw//check-if-visited/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"",
+						"check-if-visited",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit pheromone",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/deposit-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"deposit-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/deposit-pheromone/<int:x_pos>/<int:y_pos>\n\nChange the values of x_pos, y_pos according to the coordenates of the cell you want to deposit the pheromone"
+			},
+			"response": []
+		},
+		{
+			"name": "Check current pheromone intensity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/current-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"current-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check north pheromone intensity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/north-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"north-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check south pheromone intensity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/south-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"south-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check east pheromone intensity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/east-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"east-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check west pheromone intensity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/west-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"west-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check north cell",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/check-north-neighbor/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"check-north-neighbor",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check current cell",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/check-current-type/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"check-current-type",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check south cell",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/check-south-neighbor/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"check-south-neighbor",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check east cell",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/north-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"north-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Check west cell",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/check-west-neighbor/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"check-west-neighbor",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Evaporate pheromones",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/west-pheromone/1/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"west-pheromone",
+						"1",
+						"3"
+					]
+				},
+				"description": "/north-pheromone/<int:x_pos>/<int:y_pos>\n\nThe x_pos and y_pos values are the coordenates of the cell you are currently on, not the coordenates of the neighbor"
+			},
+			"response": []
+		},
+		{
+			"name": "Set north neighbor type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/set-north-neighbor/1/3/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"set-north-neighbor",
+						"1",
+						"3",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set south neighbor type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/set-south-neighbor/1/3/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"set-south-neighbor",
+						"1",
+						"3",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set east neighbor type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/set-east-neighbor/1/3/0",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"set-east-neighbor",
+						"1",
+						"3",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set west neighbor type",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/dpw/set-west-neighbor/1/3/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"dpw",
+						"set-west-neighbor",
+						"1",
+						"3",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
