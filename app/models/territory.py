@@ -4,7 +4,7 @@ def create_cells(driver, x, y, value):
         query = (
             "CREATE (c:Cell {visited: 'F', type: 0, pheromoneIntensity: 0, xPos: $x, yPos: $y})"
         )
-    elif value == '1':
+    else:
         query = (
             "CREATE (c:Cell {visited: null, type: 1, pheromoneIntensity: null, xPos: $x, yPos: $y})"
         )
